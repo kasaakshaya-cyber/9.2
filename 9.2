@@ -1,0 +1,57 @@
+import java.sql.*;
+
+public class JDBCInsert {
+    public static void main(String[] args) {
+
+        String url = "jdbc:mysql://localhost:3306/college";
+        String user = "root";
+        String password = "root";
+
+        try {
+            // Load JDBC Driver
+            Class.forName("com.mysql.cj.jdbc.Driver");
+
+            // Connect to Database
+            Connection con = DriverManager.getConnection(
+                url, user, password
+            );
+
+            System.out.println("Database connected successfully!");
+
+            // SQL Insert Query
+            String query =
+                "INSERT INTO students (id, name) VALUES (?, ?)";
+
+            PreparedStatement ps = con.prepareStatement(query);
+
+            // Insert Values
+            ps.setInt(1, 4);
+            ps.setString(2, "Kiran");
+
+            // Execute Query
+            int rows = ps.executeUpdate();
+
+            if (rows > 0) {
+                System.out.println("Record inserted successfully!");
+            }
+
+            // Close Resources
+            ps.close();
+            con.close();
+
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+}
+SQL Commands to Create the Database
+Run these commands in MySQL before executing the Java program:
+
+sql
+CREATE DATABASE college;
+USE college;
+
+CREATE TABLE students (
+    id INT PRIMARY KEY,
+    name VARCHAR(50)
+);
